@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "lodash": "^1.0.0",
+    "react": "^19.0.0"
+  },
+  "scripts": {
+    "start": "cross-env NODE_ENV=staging nodemon index",
+    "production": "cross-env NODE_ENV=production nodemon index"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  }
+}
