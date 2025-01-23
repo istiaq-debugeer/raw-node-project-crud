@@ -8,9 +8,9 @@ const data=require('./lib/data');
 
 const app={};
 
-data.delete('test','newFile2',{'name':'Canada',language:'ENG'},(err,data)=>{
-    console.log(`error was`,err);
-});
+// data.delete('test','newFile2',{'name':'Canada',language:'ENG'},(err,data)=>{
+//     console.log(`error was`,err);
+// });
 app.config={
     port:3000
 };
