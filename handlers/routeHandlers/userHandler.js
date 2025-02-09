@@ -3,6 +3,7 @@ const data=require('../../lib/data')
 const fs=require('fs');
 const path=require('path');
 const handler={};
+const tokenHandler=require('./tokenHandlers');
 
 handler.userHandler=(requestProperties,callback)=>{
    
@@ -81,18 +82,26 @@ handler._users.get = (requestProperties, callback) => {
         : false;
 
     if (phone) {
-        data.read('users', phone, (err, data) => {
-            console.log('Read Error:', err); // Debug
-            console.log('Read Data:', data); // Debug
-
-            if (!err && data) {
-                const user = { ...JSON.parse(data) };
-                delete user.password;
-                callback(200, user);
-            } else {
-                callback(404, {
-                    error: 'Requested user was not found!',
+        let token =typeof requestProperties.headersObject.token === 'string' ? requestProperties.headersObject.token : false;
+        tokenHandler._tokens.verify(token,phone,(tokenIsValid)=>{
+            if(tokenIsValid){
+                data.read('users', phone, (err, data) => {
+                    console.log('Read Error:', err); // Debug
+                    console.log('Read Data:', data); // Debug
+        
+                    if (!err && data) {
+                        const user = { ...JSON.parse(data) };
+                        delete user.password;
+                        callback(200, user);
+                    } else {
+                        callback(404, {
+                            error: 'Requested user was not found!',
+                        });
+                    }
                 });
+            }else{
+                callback(403,{error:'Authentication failure!'})
+
             }
         });
     } else {
